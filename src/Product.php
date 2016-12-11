@@ -47,4 +47,6 @@ class Product {
     public function getQuantity() {
         return $this->quantity;
     }
+    
+    //ale git jest fajny
 }
