@@ -9,7 +9,9 @@ class Product {
     private $price;
     private $description;
     private $quantity;
-    
+    private $categoryId;
+
+
     public function __construct() {
         $this->id = -1;
         $this->name = "";
@@ -47,6 +49,10 @@ class Product {
     public function getQuantity() {
         return $this->quantity;
     }
-    
+    public function getCategoryId() {
+        return $this->categoryId;
+    }
+
+
     //ale git jest fajny
 }
