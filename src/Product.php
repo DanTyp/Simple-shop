@@ -18,6 +18,7 @@ class Product {
         $this->price = 0;
         $this->description = "";
         $this->quantity = 0;
+        $this->categoryId = "";
     }
     /*
      * Sets and Gets mathods:
