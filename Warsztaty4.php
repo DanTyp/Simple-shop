@@ -1,14 +1,18 @@
 <?php
 /*
+
 W bazie danych Łukasz ma tabele:
+
+
 Admins
 Categories
 Messages
-Orders
-Photos
-Products::Products_Orders
+Orders +
+Photos +
+Products +
+Products_Orders +
 Statuses
-Users
+Users +
 
 między zaówieniami a produktami relacja wiele do wielu
     

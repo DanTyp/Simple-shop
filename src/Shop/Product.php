@@ -1,7 +1,4 @@
 <?php
-/**
- * Class Product:
- */
 
 class Product {
     private $id;
@@ -20,9 +17,7 @@ class Product {
         $this->quantity = 0;
         $this->categoryId = "";
     }
-    /*
-     * Sets and Gets mathods:
-     */
+
     public function setName($name) {
         $this->name = $name;
     }
