@@ -1,4 +1,5 @@
 <?php
+/*
 W bazie danych Łukasz ma tabele:
 Admins
 Categories
@@ -55,7 +56,7 @@ zamówienia mogą być zapisywane do bazy danych lub trzymane w sesji,
         
         
         są 2 podejścia jeżeli usuwamy kategorię - zeby produty tej kategorii usunąć lub nie -> On Delete Set null -> to po usunięciu
-        grupy id_grupy danego produktu będzie ustawiony na null -> klient nie owinien widziec tych produktów ale admin tak
+        grupy id_grupy danego produktu będzie ustawiony na null -> klient nie powinien widziec tych produktów ale admin tak
         
         
         administrator ma stronke edytwania zamówienia gdzie moze np zmienić status zamówienia
