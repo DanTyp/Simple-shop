@@ -1,19 +1,37 @@
 <?php
 require_once __DIR__ . '/../src/session.php';
 require_once __DIR__ . '/../src/User.php';
-require_once __DIR__ . '/../exceptions/InvalidNameException.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allIsRight = true;
-    $newUser = new User();
     $exMessages = [];
-    
-    if(isset($_POST['name'])){
-        try {
+
+    try {
+
+        $newUser = new User();
+
+        if (isset($_POST['name'])) {
             $newUser->setName($_POST['name']);
-        } catch (InvalidNameException $ex) {
-            $exMessages['name'] = $ex->getMessage();
         }
+        if (isset($_POST['surname'])) {
+            $newUser->setSurname($_POST['surname']);
+        }
+        if (isset($_POST['email'])) {
+            $newUser->setEmail($_POST['email']);
+        }
+        if (isset($_POST['password1']) && isset($_POST['password2'])) {
+            $newUser->setHashedPassword($_POST['password1'], $_POST['password2']);
+        }
+    } catch (InvalidNameException $ex) {
+        $exMessages['name'] = $ex->getMessage();
+    } catch (InvalidSurnameException $ex) {
+        $exMessages['surname'] = $ex->getMessage();
+    } catch (InvalidEmailException $ex) {
+        $exMessages['email'] = $ex->getMessage();
+    } catch (InvalidPasswordException $ex) {
+        $exMessages['invalidPassword'] = $ex->getMessage();
+    } catch (DifferentPasswordsException $ex) {
+        $exMessages['differentPasswords'] = $ex->getMessage();
     }
 }
 ?>
@@ -33,42 +51,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php
             if (isset($exMessages['name'])) {
-                echo $exMessages['name'];
-            }                
+                echo $exMessages['name'] . '<br>';
+            }
             ?>
-            
+
+            <br>
             Surname: <br> <input type="text" name="surname"><br>
 
             <?php
-
+            if (isset($exMessages['surname'])) {
+                echo $exMessages['surname'] . '<br>';
+            }
             ?>
 
+            <br>
             E-mail: <br> <input type="text" name="email"><br>
 
             <?php
-
+            if (isset($exMessages['email'])) {
+                echo $exMessages['email'] . '<br>';
+            }
             ?>
 
+            <br>
             Your password: <br> <input type="password" name="password1"><br>
 
-
+            <br>
             Repeat password: <br> <input type="password" name="password2"><br>
 
             <?php
-
+            if (isset($exMessages['invalidPassword'])) {
+                echo $exMessages['invalidPassword'] . '<br>';
+            }
+            if (isset($exMessages['differentPasswords'])) {
+                echo $exMessages['differentPasswords'] . '<br>';
+            }
             ?>
 
+            <br>
             <label>
                 <input type="checkbox" name="regulations" />I accept regulations
             </label>
-            <?php
+            <br>
 
+            <?php
             ?>
 
             <br>
 
             <input type="submit" value="Register" />
-            <br>
+            <br><br>
             <a href="UserLoginPage.php">Go to the login page</a>
 
         </form>
