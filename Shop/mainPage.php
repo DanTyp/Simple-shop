@@ -1,4 +1,4 @@
 <?php
-echo "Witaj w sklepie internetowym Simple Shop!"
+echo "Wellcome to the Simple Shop!"
 ?>
 
