@@ -25,7 +25,7 @@ class User {
     }
 
     public function setName($name) {
-        if (is_string($name) && strlen(trim($name)) >= 3 && strlen(trim($name)) <= 20) {
+        if (is_string($name) && strlen(trim($name)) >= 3 && strlen(trim($name)) <= 20 && ctype_alnum($surname)) {
             $this->name = trim($name);
         } else {
             $allIsRight = false;

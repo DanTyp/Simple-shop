@@ -1,17 +1,18 @@
 <?php
 require_once __DIR__ . '/../src/session.php';
 require_once __DIR__ . '/../src/User.php';
-//require_once __DIR__ . '/../exceptions/InvalidNameException.php';
+require_once __DIR__ . '/../exceptions/InvalidNameException.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allIsRight = true;
     $newUser = new User();
+    $exMessages = [];
     
-    if(isset($_POST['username'])){
+    if(isset($_POST['name'])){
         try {
             $newUser->setName($_POST['name']);
         } catch (InvalidNameException $ex) {
-            $_SESSION['e_name'] = $ex->getMessage();
+            $exMessages['name'] = $ex->getMessage();
         }
     }
 }
@@ -31,9 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Name: <br> <input type="text" name="name"><br>
 
             <?php
-            if (isset($_SESSION['e_name'])) {
-                echo $_SESSION['e_name'];
-                unset($_SESSION['e_name']);
+            if (isset($exMessages['name'])) {
+                echo $exMessages['name'];
             }                
             ?>
             
