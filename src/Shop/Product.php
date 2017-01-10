@@ -1,9 +1,8 @@
 <?php
 
-/*
+/**
  * Class Product:
  */
-
 class Product {
 
     private $id;
