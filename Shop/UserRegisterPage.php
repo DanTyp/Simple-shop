@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allIsRight = true;
     $newUser = new User();
     
-    if(isset($_POST['username'])){
+    if(isset($_POST['name'])){
         try {
             $newUser->setName($_POST['name']);
         } catch (InvalidNameException $ex) {
