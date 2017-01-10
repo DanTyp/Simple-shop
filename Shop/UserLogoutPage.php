@@ -1,5 +1,5 @@
 <?php
-require_once 'src/session.php';
+require_once __DIR__ . '/../src/session.php';
 
 session_unset();
 

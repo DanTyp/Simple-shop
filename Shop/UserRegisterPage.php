@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/session.php';
-require_once __DIR__ . '/../src/Shop/User.php';
+require_once __DIR__ . '/../src/User.php';
+//require_once __DIR__ . '/../exceptions/InvalidNameException.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allIsRight = true;
@@ -8,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if(isset($_POST['username'])){
         try {
-            $newUser->setName($_POST['username']);
+            $newUser->setName($_POST['name']);
         } catch (InvalidNameException $ex) {
-            echo  $ex->getMessage();
+            $_SESSION['e_name'] = $ex->getMessage();
         }
     }
 }
@@ -27,10 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <body>
         <form method="POST">
 
-            Name: <br> <input type="text" name="username"><br>
+            Name: <br> <input type="text" name="name"><br>
 
             <?php
-                
+            if (isset($_SESSION['e_name'])) {
+                echo $_SESSION['e_name'];
+                unset($_SESSION['e_name']);
+            }                
             ?>
             
             Surname: <br> <input type="text" name="surname"><br>
@@ -65,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <input type="submit" value="Register" />
             <br>
-            <a href="loginPage.php">Go to the login page</a>
+            <a href="UserLoginPage.php">Go to the login page</a>
 
         </form>
     </body>

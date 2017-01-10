@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../ExceptionClasses/InvalidNameException.php';
-require_once __DIR__ . '/../ExceptionClasses/InvalidSurnameException.php';
-require_once __DIR__ . '/../ExceptionClasses/InvalidAddressException.php';
-require_once __DIR__ . '/../ExceptionClasses/InvalidEmailException.php';
-require_once __DIR__ . '/../ExceptionClasses/InvalidPasswordException.php';
-require_once __DIR__ . '/../ExceptionClasses/DifferentPasswordsException.php';
+require_once __DIR__ . '/../exceptions/InvalidNameException.php';
+require_once __DIR__ . '/../exceptions/InvalidSurnameException.php';
+require_once __DIR__ . '/../exceptions/InvalidAddressException.php';
+require_once __DIR__ . '/../exceptions/InvalidEmailException.php';
+require_once __DIR__ . '/../exceptions/InvalidPasswordException.php';
+require_once __DIR__ . '/../exceptions/DifferentPasswordsException.php';
 
 class User {
 
