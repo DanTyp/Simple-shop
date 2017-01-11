@@ -66,8 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Name: <br> <input type="text" name="name"><br>
 
             <?php
+
             if (isset($errorMessages['invalidName'])) {
                 echo '<div class="error">' . $errorMessages['invalidName'] . '</div>';
+
             }
             ?>
 
@@ -75,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Surname: <br> <input type="text" name="surname"><br>
 
             <?php
+
             if (isset($errorMessages['invalidSurname'])) {
                 echo '<div class="error">' . $errorMessages['invalidSurname'] . '</div>';
             }
@@ -118,13 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php
             if (isset($errorMessages['invalidApartmentNo'])) {
                 echo '<div class="error">' . $errorMessages['invalidApartmentNo'] . '</div>';
-            }
+
             ?>
 
             <br>
             E-mail: <br> <input type="text" name="email"><br>
 
             <?php
+
+
 
             ?>
 
@@ -136,6 +141,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <?php
 
+
+
+
+
             ?>
 
             <br>
@@ -144,7 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </label>
             <br>
 
-            <?php ?>
+            <?php 
+            ?>
 
             <br>
 
