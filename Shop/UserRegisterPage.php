@@ -18,31 +18,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $errorMessages['invalidSurname'] = 'Please enter correct surname!';
     }
-    
+
     if (isset($_POST['country']) && is_string($_POST['country']) && strlen(trim($_POST['country'])) > 0) {
         $newUser->setCountry(trim($_POST['country']));
     } else {
         $errorMessages['invalidCountry'] = 'Please enter correct country name!';
     }
-    
+
     if (isset($_POST['city']) && is_string($_POST['city']) && strlen(trim($_POST['city'])) > 0) {
         $newUser->setCountry(trim($_POST['city']));
     } else {
         $errorMessages['invalidCity'] = 'Please enter correct city name!';
     }
-    
+
     if (isset($_POST['postalCode']) && preg_match('/[0-9][0-9]-[0-9][0-9][0-9]/', $_POST['postalCode']) == 1) {
         $newUser->setPostalCode($_POST['postalCode']);
     } else {
         $errorMessages['invalidPostalCode'] = 'Please enter correct postal code!';
     }
-    
+
     if (isset($_POST['houseNo']) && preg_match('/[0-9]+[A-Z]{0,1}|[0-9]+[a-z]{0,1}/', $_POST['houseNo']) == 1) {
         $newUser->setPostalCode($_POST['houseNo']);
     } else {
         $errorMessages['invalidHouseNo'] = 'Please enter correct house number!';
     }
-    
+
     if (isset($_POST['apartmentNo']) && preg_match('/[0-9]*/', $_POST['apartmentNo']) == 1) {
         $newUser->setPostalCode($_POST['apartmentNo']);
     } else {
@@ -66,10 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Name: <br> <input type="text" name="name"><br>
 
             <?php
-
             if (isset($errorMessages['invalidName'])) {
                 echo '<div class="error">' . $errorMessages['invalidName'] . '</div>';
-
             }
             ?>
 
@@ -77,12 +75,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Surname: <br> <input type="text" name="surname"><br>
 
             <?php
-
             if (isset($errorMessages['invalidSurname'])) {
                 echo '<div class="error">' . $errorMessages['invalidSurname'] . '</div>';
             }
             ?>
-            
+
             <br>
             Country: <br> <input type="text" name="country"><br>
             <?php
@@ -90,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<div class="error">' . $errorMessages['invalidCountry'] . '</div>';
             }
             ?>
-            
+
             <br>
             City: <br> <input type="text" name="city"><br>
             <?php
@@ -98,8 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<div class="error">' . $errorMessages['invalidCity'] . '</div>';
             }
             ?>
-            
-                        
+
+
             <br>
             Postal Code: <br> <input type="text" name="postalCode"><br>
             <?php
@@ -107,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<div class="error">' . $errorMessages['invalidPostalCode'] . '</div>';
             }
             ?>
-            
+
             <br>
             House number: <br> <input type="text" name="houseNo"><br>
             <?php
@@ -115,22 +112,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<div class="error">' . $errorMessages['invalidHouseNo'] . '</div>';
             }
             ?>
-            
+
             <br>
             Apartment number: <br> <input type="text" name="apartmentNo"><br>
             <?php
             if (isset($errorMessages['invalidApartmentNo'])) {
                 echo '<div class="error">' . $errorMessages['invalidApartmentNo'] . '</div>';
-
+            }
             ?>
 
             <br>
             E-mail: <br> <input type="text" name="email"><br>
 
             <?php
-
-
-
             ?>
 
             <br>
@@ -140,11 +134,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Repeat password: <br> <input type="password" name="password2"><br>
 
             <?php
-
-
-
-
-
             ?>
 
             <br>
@@ -153,8 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </label>
             <br>
 
-            <?php 
-            ?>
+            <?php ?>
 
             <br>
 
