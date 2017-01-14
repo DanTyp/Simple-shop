@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/session.php';
 require_once __DIR__ . '/../src/User.php';
+require_once __DIR__ . '/../src/connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allIsRight = true;
@@ -11,42 +12,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newUser->setName(trim($_POST['name']));
     } else {
         $errorMessages['invalidName'] = 'Please enter correct name!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['surname']) && is_string($_POST['surname']) && strlen(trim($_POST['surname'])) > 0) {
-        $newUser->setSurname(trim($_POST['name']));
+        $newUser->setSurname(trim($_POST['surname']));
     } else {
         $errorMessages['invalidSurname'] = 'Please enter correct surname!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['country']) && is_string($_POST['country']) && strlen(trim($_POST['country'])) > 0) {
         $newUser->setCountry(trim($_POST['country']));
     } else {
         $errorMessages['invalidCountry'] = 'Please enter correct country name!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['city']) && is_string($_POST['city']) && strlen(trim($_POST['city'])) > 0) {
-        $newUser->setCountry(trim($_POST['city']));
+        $newUser->setCity(trim($_POST['city']));
     } else {
         $errorMessages['invalidCity'] = 'Please enter correct city name!';
+        $allIsRight = false;
+    }
+    
+    if (isset($_POST['street']) && is_string($_POST['street']) && strlen(trim($_POST['street'])) > 0) {
+        $newUser->setStreet(trim($_POST['street']));
+    } else {
+        $errorMessages['invalidStreet'] = 'Please enter correct street name!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['postalCode']) && preg_match('/[0-9][0-9]-[0-9][0-9][0-9]/', $_POST['postalCode']) == 1) {
         $newUser->setPostalCode($_POST['postalCode']);
     } else {
         $errorMessages['invalidPostalCode'] = 'Please enter correct postal code!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['houseNo']) && preg_match('/[0-9]+[A-Z]{0,1}|[0-9]+[a-z]{0,1}/', $_POST['houseNo']) == 1) {
-        $newUser->setPostalCode($_POST['houseNo']);
+        $newUser->setHouseNo($_POST['houseNo']);
     } else {
         $errorMessages['invalidHouseNo'] = 'Please enter correct house number!';
+        $allIsRight = false;
     }
 
     if (isset($_POST['apartmentNo']) && preg_match('/[0-9]*/', $_POST['apartmentNo']) == 1) {
-        $newUser->setPostalCode($_POST['apartmentNo']);
+        $newUser->setApartmentNo($_POST['apartmentNo']);
     } else {
         $errorMessages['invalidApartmentNo'] = 'Please enter correct apartment number!';
+        $allIsRight = false;
+    }
+    
+    if (isset($_POST['email']) && is_string($_POST['email'])){
+        $email = $_POST['email'];
+        $emailB = filter_var($email, FILTER_SANITIZE_EMAIL);  
+        
+        if (filter_var($emailB, FILTER_VALIDATE_EMAIL) == true && ($emailB == $email)) {
+            
+            if($finalEmail = User::verifyEmailsAvailability($connection, $email)) {
+                $newUser->setEmail($email);
+            } else {
+                $errorMessages['reservedEmail'] = 'The selected e-mail is already reserved!';
+                $allIsRight = false;
+            }
+        } else {
+            $errorMessages['invalidEmail'] = 'Please enter correct e-mail address!';
+            $allIsRight = false;
+        }
+    }
+    
+    if (isset($_POST['password1']) && isset($_POST['password2'])) {
+        $password1 = $_POST['password1'];
+        $password2 = $_POST['password2'];
+
+        if (strlen($password1) >= 8 && strlen($password1) <= 20 && $password1 === $password2) {
+            $newUser->setHashedPassword($password1);
+        } else if (strlen($password1) < 8 || strlen($password1) > 20) {
+            $errorMessages['invalidPassword'] = "Password must have between 8 and 20 characters!";
+            $allIsRight = false;
+        } else {
+            $errorMessages['differentPasswords'] = "Given passwords are not identical!";
+            $allIsRight = false;
+        }
+    }
+    
+    if (!isset($_POST['regulations'])) {
+        $allIsRight = false;
+        $errorMessages['regulationsError'] = "Confirm acceptance of the Regulations!";
+    }
+    
+    if( $allIsRight == true) {
+        $newUser->saveUserToDB($connection);
+        header('Location: UserLoginPage.php');
     }
 }
 ?>
@@ -104,6 +162,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo '<div class="error">' . $errorMessages['invalidPostalCode'] . '</div>';
             }
             ?>
+            
+            <br>
+            Street: <br> <input type="text" name="street"><br>
+            <?php
+            if (isset($errorMessages['invalidStreet'])) {
+                echo '<div class="error">' . $errorMessages['invalidStreet'] . '</div>';
+            }
+            ?>
 
             <br>
             House number: <br> <input type="text" name="houseNo"><br>
@@ -125,6 +191,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             E-mail: <br> <input type="text" name="email"><br>
 
             <?php
+            if (isset($errorMessages['invalidEmail'])) {
+                echo '<div class="error">' . $errorMessages['invalidEmail'] . '</div>';
+            }
+            if (isset($errorMessages['reservedEmail'])) {
+                echo '<div class="error">' . $errorMessages['reservedEmail'] . '</div>';
+            }
             ?>
 
             <br>
@@ -134,15 +206,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Repeat password: <br> <input type="password" name="password2"><br>
 
             <?php
+            if (isset($errorMessages['invalidPassword'])) {
+                echo '<div class="error">' . $errorMessages['invalidPassword'] . '</div>';
+            }
+            if (isset($errorMessages['differentPasswords'])) {
+                echo '<div class="error">' . $errorMessages['differentPasswords'] . '</div>';
+            }
             ?>
 
             <br>
             <label>
-                <input type="checkbox" name="regulations" />I accept regulations
+                <input type="checkbox" name="regulations" />I accept Regulations
             </label>
             <br>
 
-            <?php ?>
+            <?php 
+            if (isset($errorMessages['regulationsError'])) {
+                echo '<div class="error">' . $errorMessages['regulationsError'] . '</div>';
+            }
+            ?>
 
             <br>
 
