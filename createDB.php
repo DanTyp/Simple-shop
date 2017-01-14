@@ -42,11 +42,17 @@ CREATE TABLE `Order`
 CREATE TABLE User
 (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    surname VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    postalCode VARCHAR(20) NOT NULL,
+    street VARCHAR(255) NOT NULL,
+    houseNo VARCHAR(20) NOT NULL,
+    apartmentNo VARCHAR(20) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    hashedPassword VARCHAR(255) NOT NULL
+    hashedPassword VARCHAR(255) NOT NULL,
+    deleteStatus INT NOT NULL
         
 );
 
