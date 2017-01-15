@@ -2,6 +2,7 @@
 
 require_once 'src/connection.php';
 require_once 'src/User.php';
+require_once 'src/Admin.php';
 
 //$user = new User();
 //
@@ -99,8 +100,44 @@ require_once 'src/User.php';
 //$email = User::verifyEmailsAvailability($connection, 'dantyp@gmail.com');
 //var_dump($email);
 
-if($id = User::verifyEmailAndPassword($connection, 'jan.kowalski@gmail.com', 'jankowalski')){
-    $_SESSION['id'] = $id;
-}
+//if($id = User::verifyEmailAndPassword($connection, 'jan.kowalski@gmail.com', 'jankowalski')){
+//    $_SESSION['id'] = $id;
+//}
+//
+//var_dump($_SESSION['id']);
 
-var_dump($_SESSION['id']);
+//****************************************************************************************************************************************************
+
+//$admin = new Admin();
+//$admin->setEmail('dantyp2@gmail.com');
+////password1
+//$admin->setHashedPassword('password1');
+//
+//echo $admin->getEmail();
+//echo '<br>';
+//echo $admin->getHashedPassword();
+//$admin->saveAdminToDB($connection);
+
+//$admin2 = new Admin();
+//$admin2->setId(3);
+//$admin2->setEmail('dantyp@wp.pl');
+//$admin2->setHashedPassword('password2');
+//$admin2->saveAdminToDB($connection);
+//$admin = new Admin();
+//$admin->setId(1);
+//$admin->setEmail('dantyp@gmail.com');
+//$admin->setHashedPassword('password1');
+//$admin->saveAdminToDB($connection);
+//
+//$availableEmail = Admin::verifyEmailsAvailability($connection, 'dantyp@wp.pl');
+//var_dump($availableEmail);
+//$availableEmail = Admin::verifyEmailsAvailability($connection, 'dantyp2@wp.pl');
+//var_dump($availableEmail);
+//
+//$id = Admin::verifyEmailAndPassword($connection, 'dantyp@wp.pl', 'password2');
+//var_dump($id);
+//
+//$id = Admin::verifyEmailAndPassword($connection, 'dantyp@gmail.com', 'password1');
+//var_dump($id);
+
+
