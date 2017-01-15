@@ -135,8 +135,9 @@ class Product {
 
     static public function loadProductById(mysqli $connection, $id) {
 
-        $sql = "SELECT p.*, c.categoryName FROM Product as p, Category as c WHERE p.id=$id AND p.categoryId = c.id";
-        //"SELECT t.*, u.username FROM Tweet as t, Users as u WHERE t.userId = u.id AND userId=$userId";
+        $sql = "SELECT p.*, c.categoryName, f.path FROM Product as p JOIN Category as c ON (p.categoryId = c.id)"
+                . "LEFT JOIN Photos as f on (p.id=f.productId AND f.photoSeq=0) WHERE p.id=$id";
+        
 
         $result = $connection->query($sql);
 
@@ -151,10 +152,11 @@ class Product {
             $loadedProduct->quantity = $row['quantity'];
             $loadedProduct->categoryId = $row['categoryId'];
             $loadedProduct->categoryName = $row['categoryName'];
+            $loadedProduct->path = $row['path'];
 
             return $loadedProduct;
         }
-        var_dump('Product->saveToDB error: ' . $connection->error);
+        var_dump('Product->loadProductById error: ' . $connection->error);
         var_dump('SQL: ' . $sql);
         return null;
     }

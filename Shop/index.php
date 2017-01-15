@@ -6,17 +6,17 @@ require_once '../src/Product.php';
 <!DOCTYPE HTML>
 <html lang="pl">
     <head>
-        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>Simple shop</title>
     </head>
 
     <body>
         
-        Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie<br>
+        <hr>Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie<br>
         1. Nazwa sklepu i Logo<br>
         2. Info o zalogowanym/niezalogowanym użytkowniku + link do stony login/edit user<br>
-        3. Koszyk z liczbą produktów i wartością<br><br><br>
+        3. Koszyk z liczbą produktów i wartością<br><br>
         
         <table>
             <tr>
@@ -27,7 +27,7 @@ require_once '../src/Product.php';
                     }
                 ?> 
             </tr>
-        </table>
+        </table><hr>
         <br>       
         
         <form method="POST" action="index.php">
@@ -74,8 +74,14 @@ require_once '../src/Product.php';
     echo '<table border=1><tr><th>Category</th><th>Product</th><th>Description</th><th>Price</th><tr>';
     foreach ($searchedProducts as $product) {
         echo '<tr><td>'.$product->getCategoryName().'</td>';
-        echo '<td><a href="productPage.php?productId='.$product->getId().'">'.$product->getName().'</a><br><img src="'.$product->getPath().'" height=100 width=auto/></td>';
-        echo '<td>'.substr($product->getDescription(), 0, 300).'</td>';
+        echo '<td><a href="ProductPage.php?productId='.$product->getId().'">'.$product->getName().'</a><br><img src="'.$product->getPath().'" height=100 width=auto/></td>';
+
+        $exploded_name = explode('<br>', $product->getDescription());
+        $exploded_trimmed = array_slice($exploded_name, 0, 10);
+        $imploded_name = implode('<br>', $exploded_trimmed);
+//        echo '<td>'.substr($product->getDescription(), 0, 300).'</td>';
+
+        echo '<td>'.$imploded_name.'</td>';
         echo '<td>'.$product->getPrice().'</td></tr>';
     }
     echo '</table>';
