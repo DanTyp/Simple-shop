@@ -5,6 +5,7 @@ class Photos {
     private $id;
     private $path;
     private $productId;
+    private $photoSeq;
 
     public function __construct() {
         $this->id = -1;
@@ -21,6 +22,10 @@ class Photos {
     public function setProductId($productId) {
         $this->productId = $productId;
     }
+    
+    public function setPhotoSeq($photoSeq) {
+        $this->photoSeq = $photoSeq;
+    }
 
     public function getId() {
         return $this->id;
@@ -33,6 +38,10 @@ class Photos {
     public function getProductId() {
         return $this->productId;
     }
+    
+    public function getPhotoSeq() {
+        return $this->photoSeq;
+    }
 
     /*
      * Saving a new photos to DB
@@ -41,8 +50,8 @@ class Photos {
     public function saveToDB(mysqli $connection) {
         if ($this->id == -1) {
 
-            $sql = "INSERT INTO Photos (path, productId)
-                  VALUES ('$this->path', '$this->productId')";
+            $sql = "INSERT INTO Photos (path, productId, photoSeq)
+                  VALUES ('$this->path', '$this->productId', '$this->photoSeq')";
             $result = $connection->query($sql);
 
             if ($result == true) {
@@ -50,7 +59,7 @@ class Photos {
                 return true;
             }
         } else {
-            $sql = "UPDATE Photos SET path = $this->path, productId = $this->productId
+            $sql = "UPDATE Photos SET path = $this->path, productId = $this->productId, photoSeq = $this->photoSeq
                     WHERE id=$this->id";
             $result = $connection->query($sql);
             if ($result == true) {
@@ -90,13 +99,14 @@ class Photos {
             $loadedPhoto->id = $row['id'];
             $loadedPhoto->path = $row['path'];
             $loadedPhoto->productId = $row['productId'];
+            $loadedPhoto->photoSeq = $row['photoSeq'];
             return $loadedPhoto;
         }
 
         return null;
     }
-    
-    static public function loadAllCategory(mysqli $connection) {
+    /*
+    static public function loadAllPhotos(mysqli $connection) {
         $sql = "SELECT * FROM Photos";
         $ret = [];
         $result = $connection->query($sql);
@@ -106,6 +116,25 @@ class Photos {
                 $loadedPhoto->id = $row['id'];
                 $loadedPhoto->path = $row['path'];
                 $loadedPhoto->productId = $row['productId'];
+                $loadedPhoto->photoSeq = $row['photoSeq'];
+                $ret[] = $loadedPhoto;
+            }
+        }
+        return $ret;
+    }
+     * 
+     */
+    static function loadPhotosByProductId(mysqli $connection, $productId) {
+        $sql = "SELECT * FROM Photos WHERE productId=$productId ORDER BY photoSeq ASC";
+        $ret = [];
+        $result = $connection->query($sql);
+        if ($result == true && $result->num_rows != 0) {
+            foreach ($result as $row) {
+                $loadedPhoto = new Photos();
+                $loadedPhoto->id = $row['id'];
+                $loadedPhoto->path = $row['path'];
+                $loadedPhoto->productId = $row['productId'];
+                $loadedPhoto->photoSeq = $row['photoSeq'];
                 $ret[] = $loadedPhoto;
             }
         }
