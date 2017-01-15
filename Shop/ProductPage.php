@@ -23,7 +23,7 @@ require_once '../src/Photos.php';
         <table>
             <tr>
                <?php
-                    $allCategories = Category::loadAllCategory($conn);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
+                    $allCategories = Category::loadAllCategory($connection);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
                     foreach ($allCategories as $category) {
                         echo '<td><a href="index.php?categoryId='.$category->getId().'">'.$category->getCategoryName().'</a></td>';
                     }
@@ -36,7 +36,7 @@ require_once '../src/Photos.php';
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                
                
-               $product = Product::loadProductById($conn, $_GET['productId']);
+               $product = Product::loadProductById($connection, $_GET['productId']);
               
                echo '<a href="index.php?categoryId='.$product->getCategoryId().'">'.$product->getCategoryName().'</a> > ';
                echo $product->getName().'<br>';
@@ -45,7 +45,7 @@ require_once '../src/Photos.php';
                echo 'Availability: <b>'.$product->getQuantity().' pcs.</b><br><br>';
                echo '<button type="button">Add to Basket</button></td></tr></table>';
                
-               $photos = Photos::loadPhotosByProductId($conn, $_GET['productId']);
+               $photos = Photos::loadPhotosByProductId($connection, $_GET['productId']);
                foreach ($photos as $photo) {
                    echo '<img src="'.$photo->getPath().'" width=70/>';
                }
