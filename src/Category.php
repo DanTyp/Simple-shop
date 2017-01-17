@@ -97,7 +97,7 @@ class Category {
     }
     
     static public function loadAllCategory(mysqli $connection) {
-        $sql = "SELECT * FROM Category ORDER BY categoryName ASC";
+        $sql = "SELECT * FROM Category ORDER BY id ASC";
         $ret = [];
         $result = $connection->query($sql);
         if ($result == true && $result->num_rows != 0) {

@@ -1,14 +1,13 @@
 <?php
-require_once '../src/connection.php';
-require_once '../src/Category.php';
-require_once '../src/Product.php';
-require_once '../src/Photos.php';
+require_once __DIR__ . '/../src/connection.php';
+require_once __DIR__ . '/../src/Category.php';
+require_once __DIR__ . '/../src/Product.php';
+require_once __DIR__ . '/../src/Photos.php';
 ?>
 <!DOCTYPE HTML>
 <html lang="pl">
     <head>
-        <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta charset="UTF-8">
         <title>Product Page</title>
     </head>
     
@@ -32,7 +31,8 @@ require_once '../src/Photos.php';
         </table>
         <hr>
         
-        <?php
+        <?php 
+        
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                
                
