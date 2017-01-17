@@ -1,5 +1,5 @@
 nbproject/
 vendor/
-
+src/connection.php
 src/testCategory.php
 testujeSobie

@@ -1,8 +1,14 @@
 <?php
+/*
+ * Na tej stronie będzie wczytywany produkt, jego opis, cena i dostępność oraz możliwość dodania produktu 
+ * do koszyka przyciskiem i przekierowanie na stronę koszyka
+ */
 require_once __DIR__ . '/../src/connection.php';
 require_once __DIR__ . '/../src/Category.php';
 require_once __DIR__ . '/../src/Product.php';
 require_once __DIR__ . '/../src/Photos.php';
+require_once __DIR__ .'/../src/User.php';
+require_once __DIR__ . '/../src/session.php';
 ?>
 <!DOCTYPE HTML>
 <html lang="pl">
@@ -15,8 +21,19 @@ require_once __DIR__ . '/../src/Photos.php';
     <body>
         <hr>Strona produktu:<br>
         Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie:<br>
-        1. Nazwa sklepu i Logo<br>
-        2. Info o zalogowanym/niezalogowanym użytkowniku + link do stony login/edit user<br>
+        1. Nazwa sklepu i Logo<br><br>
+        2. 2. 
+        <?php
+        if (isset($_SESSION['loggedUserId'])) {
+            
+            $loggedUserId = User::loadUserById($connection, $_SESSION['loggedUserId']);
+            echo "Zalogowany użytkownik to: ";
+            echo $loggedUserId->getName(). ' o id'. $_SESSION['loggedUserId'] .'<br><br>';
+        } else {
+            header('Location: UserLoginPage.php');
+        }
+        
+        ?>
         3. Koszyk z liczbą produktów i wartością<br><br>
         
         <table>
@@ -43,7 +60,12 @@ require_once __DIR__ . '/../src/Photos.php';
                echo '<table><tr><td><img src="'.$product->getPath().'"  width=600/></td>';
                echo '<td>Price: <b>'.$product->getPrice().' zł</b><br><br>';
                echo 'Availability: <b>'.$product->getQuantity().' pcs.</b><br><br>';
-               echo '<button type="button">Add to Basket</button></td></tr></table>';
+                      
+               echo '<form method="post" action="CartPage.php">';
+               echo('<input type="hidden" name="productId" value="' . $product->getId() . '">');
+               echo '<button type="submit" name="submit" value="cart">Add to Basket</button><br><br>';
+               echo '</form></td></tr></table>';
+       
                
                $photos = Photos::loadPhotosByProductId($connection, $_GET['productId']);
                foreach ($photos as $photo) {

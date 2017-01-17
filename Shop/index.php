@@ -1,7 +1,9 @@
 <?php
-require_once '../src/connection.php';
-require_once '../src/Category.php';
-require_once '../src/Product.php';
+require_once __DIR__ . '/../src/connection.php';
+require_once __DIR__ . '/../src/Category.php';
+require_once __DIR__ . '/../src/Product.php';
+require_once __DIR__ .'/../src/User.php';
+require_once __DIR__ . '/../src/session.php';
 ?>
 <!DOCTYPE HTML>
 <html lang="pl">
@@ -13,9 +15,22 @@ require_once '../src/Product.php';
 
     <body>
         
-        <hr>Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie<br>
-        1. Nazwa sklepu i Logo<br>
-        2. Info o zalogowanym/niezalogowanym użytkowniku + link do stony login/edit user<br>
+        <hr>
+        "Wellcome to the Simple Shop!"<br>
+        Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie<br>
+        1. Nazwa sklepu i Logo<br><br>
+        2. 
+        <?php
+        if (isset($_SESSION['loggedUserId'])) {
+            
+            $loggedUserId = User::loadUserById($connection, $_SESSION['loggedUserId']);
+            echo "Zalogowany użytkownik to: ";
+            echo $loggedUserId->getName(). ' o id'. $_SESSION['loggedUserId'] .'<br><br>';
+        } else {
+            header('Location: UserLoginPage.php');
+        }
+        
+        ?>
         3. Koszyk z liczbą produktów i wartością<br><br>
         
         <table>
