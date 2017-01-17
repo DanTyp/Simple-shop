@@ -21,7 +21,7 @@ require_once '../src/Product.php';
         <table>
             <tr>
                <?php
-                    $allCategories = Category::loadAllCategory($conn);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
+                    $allCategories = Category::loadAllCategory($connection);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
                     foreach ($allCategories as $category) {
                         echo '<td><a href="index.php?categoryId='.$category->getId().'">'.$category->getCategoryName().'</a></td>';
                     }
@@ -36,7 +36,7 @@ require_once '../src/Product.php';
             <select name="categoryId">
                 <option value="">All</option>
                 <?php
-                    $allCategories = Category::loadAllCategory($conn);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
+                    $allCategories = Category::loadAllCategory($connection);  //!!!zmienic ta metode aby sortowala po ID lub innej sensownej wartosci odwzorowujacej oczekiwana kolejnosc
                     foreach ($allCategories as $category) {
                         echo '<option value="'.$category->getId().'">'.$category->getCategoryName().'</option>';
                     }
@@ -56,20 +56,20 @@ require_once '../src/Product.php';
         echo 'Results for search <b>"'.$productSearch.'"</b> ';
         if(isset($_POST['categoryId']) && $_POST['categoryId'] != null) {
             $categoryId = $_POST['categoryId'];
-            $category=  Category::loadCategoryById($conn, $categoryId);
+            $category=  Category::loadCategoryById($connection, $categoryId);
             echo 'in Category <b>'.$category->getCategoryName().'</b>';
         }
         echo '<br><br>';
     } else {       
         if(isset($_GET['categoryId']) && $_GET['categoryId'] != null) {
             $categoryId = $_GET['categoryId'];
-            $category=  Category::loadCategoryById($conn, $categoryId);
+            $category=  Category::loadCategoryById($connection, $categoryId);
             echo 'Category <b>'.$category->getCategoryName().'</b><br><br>';
         }
     }
 
     
-    $searchedProducts = Product::searchProducts($conn, $categoryId, $productSearch, 1, null, null);
+    $searchedProducts = Product::searchProducts($connection, $categoryId, $productSearch, 1, null, null);
         
     echo '<table border=1><tr><th>Category</th><th>Product</th><th>Description</th><th>Price</th><tr>';
     foreach ($searchedProducts as $product) {
