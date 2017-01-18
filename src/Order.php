@@ -58,12 +58,16 @@ class Order {
     public function getCreatingDate() {
         return $this->creatingDate;
     }
+    
+    public function getProductOrder() {
+        return $this->productOrder;
+    }
 
     
     /*
      * Saving a new order to DB
      */
-
+    /*
     public function saveToDB(mysqli $connection) {
         if ($this->id == -1) {
 
@@ -102,7 +106,7 @@ class Order {
     }
     /*
      * Deleting a product
-    */
+    
     public function delete(mysqli $connection) {
         if ($this->id != -1) {
             $sql = "DELETE FROM Product WHERE id=$this->id";
@@ -139,11 +143,9 @@ class Order {
 
             return $loadedProduct;
         }
-        var_dump('Product->loadProductById error: ' . $connection->error);
-        var_dump('SQL: ' . $sql);
-        return null;
+        
     }
-    /*
+   
     static public function loadAllProduct(mysqli $connection) {
         $sql = "SELECT p.*, c.categoryName FROM Product as p, Category as c WHERE p.categoryId = c.id "
                 . "ORDER BY p.name ASC";
@@ -163,49 +165,41 @@ class Order {
         }
         return $ret;
     }
-     * 
-     */
+    */
+    static public function getCartByUserId(mysqli $connection, $userId) {
 
-    static public function searchProducts(mysqli $connection, $categoryId,$productName, $orderBy, $limitFrom, $limitNum) {
- 
-        $sql = "SELECT p.*, c.categoryName, f.path"
-                ." FROM Product as p JOIN Category as c ON (p.categoryId = c.id)"
-                . " LEFT JOIN Photos as f on (p.id=f.productId AND f.photoSeq=0) WHERE 1=1";
+        $sql = "SELECT * FROM `Order` WHERE userId=$userId AND statusId = 0";
         
-        if ($categoryId != null) {  $sql = $sql." AND p.categoryId = $categoryId"; }       
-        if ($productName != null) { $sql = $sql." AND ucase(p.name) LIKE '%". strtoupper($productName)."%'"; }
-        
-        $sql = $sql." ORDER BY p.categoryId";
-        
-        switch ($orderBy) {
-            case 0: $sql = $sql.", p.Id"; break;
-            case 1: $sql = $sql.", p.price ASC"; break;
-            case 2: $sql = $sql.", p.price DESC"; break;
-            case 3: $sql = $sql.", p.name ASC"; break;
-            case 4: $sql = $sql.", p.name DESC"; break;
-            default: break;
-        }
-        
-        if ($limitFrom != null && $limitNum != null) {
-            $sql = $sql." LIMIT $limitFrom, $limitNum";
-        }
-                
-        $ret = [];
-        $result = $connection->query($sql);
-        if ($result == true && $result->num_rows != 0) {
-            foreach ($result as $row) {
-                $loadedProduct = new Product();
-                $loadedProduct->id = $row['id'];
-                $loadedProduct->name = $row['name'];
-                $loadedProduct->price = $row['price'];
-                $loadedProduct->description = $row['description'];
-                $loadedProduct->quantity = $row['quantity'];
-                $loadedProduct->categoryId = $row['categoryId'];
-                $loadedProduct->categoryName = $row['categoryName'];
-                $loadedProduct->path = $row['path'];
-                $ret[] = $loadedProduct;
+        $resOrder = $connection->query($sql);
+
+        if ($resOrder == true && $resOrder->num_rows == 1) {
+            $row = $resOrder->fetch_assoc();
+            $loadedOrder = new Order();
+            $loadedOrder->id = $row['id'];
+            $loadedOrder->userId = $row['userId'];
+            $loadedOrder->statusId = $row['statusId'];
+            $loadedOrder->creatingDate = $row['creatingDate'];
+    
+            $sql = "SELECT p.*, p_o.id FROM Product as p, Product_Order as p_o WHERE p.id=p_o.productId AND p_o.orderId = ".$loadedOrder->getId();
+            
+            $resOrderProd = $connection->query($sql);
+
+            if ($resOrderProd == true && $resOrderProd->num_rows > 0) {
+                $i=0;
+                foreach ($resOrderProd as $row) {
+                    $loadedOrder->productOrder[$i]['id']=$row['id'];
+                    $loadedOrder->productOrder[$i]['name']=$row['name'];
+                    $loadedOrder->productOrder[$i]['price']=$row['price'];
+                    $loadedOrder->productOrder[$i]['quantity']=$row['quantity'];
+                    $i++;
+                }
             }
-        }
-        return $ret;
+            
+            return $loadedOrder;
+            
+        } else {
+            //funkcja zapisująca koszyk do bazy...
+        } 
     }
+    
 }

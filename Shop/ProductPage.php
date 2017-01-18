@@ -22,7 +22,7 @@ require_once __DIR__ . '/../src/session.php';
         <hr>Strona produktu:<br>
         Miejsce na nagłówek wspolny dla wszystkich stron, gdzie będzie:<br>
         1. Nazwa sklepu i Logo<br><br>
-        2. 2. 
+        2.
         <?php
         if (isset($_SESSION['loggedUserId'])) {
             
